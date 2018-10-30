@@ -147,6 +147,18 @@ const parseArray = ([ content ], sample = []) => {
 	});
 };
 
+const addModifier = (schema, props) => {
+	return Object.keys(props).reduce((schema, property) => {
+		const value = props[property];
+
+		if (value) {
+			schema[property] = value;
+		}
+		
+		return schema;
+	}, schema);
+};
+
 const parsePrimitive = ([ type ]) => {
 	const preparedType = type.trim();
 	const hiveType = preparedType.replace(/\(.*?\)$/, "");
@@ -156,11 +168,12 @@ const parsePrimitive = ([ type ]) => {
 		case "string":
 		case "varchar":
 		case "char":
-			return {
+			return addModifier({
 				type: "text",
-				mode: hiveType,
-				maxLength: modifiers[0] || ""
-			};
+				mode: hiveType
+			}, {
+				maxLength: Number(modifiers[0])
+			});
 		case "int":
 		case "tinyint":
 		case "smallint":
@@ -172,12 +185,13 @@ const parsePrimitive = ([ type ]) => {
 				mode: hiveType
 			};
 		case "decimal":
-			return {
+			return addModifier({
 				type: "numeric",
 				mode: hiveType,
-				precision: modifiers[0] || "",
-				scale: modifiers[1] || ""
-			};
+			}, {
+				precision: Number(modifiers[0]),
+				scale: Number(modifiers[1])
+			});
 		case "boolean":
 			return {
 				type: "bool"

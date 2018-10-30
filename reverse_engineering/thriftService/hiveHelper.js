@@ -176,13 +176,13 @@ const getJsonSchemaByTypeDescriptor = (TCLIServiceTypes) => (typeDescriptor) => 
 			return {
 				type: "text",
 				mode: "varchar",
-				maxLength: getQualifier(typeDescriptor, "characterMaximumLength", "")
+				maxLength: Number(getQualifier(typeDescriptor, "characterMaximumLength", ""))
 			};
 		case TCLIServiceTypes.TTypeId.CHAR_TYPE:
 			return {
 				type: "text",
 				mode: "char",
-				maxLength: getQualifier(typeDescriptor, "characterMaximumLength", "")
+				maxLength: Number(getQualifier(typeDescriptor, "characterMaximumLength", ""))
 			};
 		case TCLIServiceTypes.TTypeId.INT_TYPE:
 			return {
@@ -218,8 +218,8 @@ const getJsonSchemaByTypeDescriptor = (TCLIServiceTypes) => (typeDescriptor) => 
 			return {
 				type: "numeric",
 				mode: "decimal",
-				precision: getQualifier(typeDescriptor, "precision", ""),
-				scale: getQualifier(typeDescriptor, "scale", "")
+				precision: Number(getQualifier(typeDescriptor, "precision", "")),
+				scale: Number(getQualifier(typeDescriptor, "scale", ""))
 			};
 		case TCLIServiceTypes.TTypeId.BOOLEAN_TYPE:
 			return {
